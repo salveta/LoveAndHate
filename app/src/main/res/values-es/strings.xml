@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Love &amp; Hate</string>
-    <string name="love_hate_chosen">Love &amp; hate chosen</string>
+    <string name="app_name">Amor &amp; Odio</string>
+    <string name="love_hate_chosen">Amor &amp; Odio elegido</string>
     <string name="plain_text_love_hate_chosen"></string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ajustes</string>
 
     <string-array name="loveHateElements">
         <item>Windows</item>
