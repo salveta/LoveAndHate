@@ -8,19 +8,26 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.lovehate.loveandhate.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
-
         </activity>
         <activity
-            android:name="com.example.lovehate.loveandhate.SplashScreen"
+            android:name=".SplashScreen"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".RunSound"
+            android:label="@string/title_activity_run_sound" >
         </activity>
     </application>
 

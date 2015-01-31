@@ -5,6 +5,9 @@
     <string name="love_hate_chosen">Amor &amp; Odio elegido</string>
     <string name="plain_text_love_hate_chosen"></string>
     <string name="action_settings">Ajustes</string>
+    <string name="sound">Sonido</string>
+    <string name="love_hate">Amor &amp; Odio</string>
+    <string name="close">Cerrar</string>
 
     <string-array name="loveHateElements">
         <item>Windows</item>
