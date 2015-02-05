@@ -10,18 +10,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 
 public class RunSound extends Activity {
-    private int sonando=0;
-    private MediaPlayer mPlayer;
-    private int mSoundId;
-    private AudioManager mAudioManager;
-    private boolean mCanPlayAudio;
-    private SoundPool mSoundPool;
     private SharedPreferences pref;
     private boolean audioAct;
+    private AudioManager mAudioManager;
+    private MediaPlayer mPlayer;
     public static final String PRESS_NAME = "AmorOdioSettings";
 
 
@@ -31,97 +29,29 @@ public class RunSound extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run_sound);
 
-        //Capturamos preferencias
         pref = getSharedPreferences(PRESS_NAME, 0);
-        audioAct = pref.getBoolean("Audio", true);
+        audioAct = pref.getBoolean("audio", true);
         Log.d("AUDIO SET", String.valueOf(audioAct));
 
-        // Capturamos el servicio que nos proporciona manejar Sonidos
-        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+        // Take audio settings
+        ToggleButton toggleButtonSound = (ToggleButton) findViewById(R.id.toggleButton);
+        toggleButtonSound.setChecked(audioAct);
 
-
-        // Desactivamos el boton del play
-        final ToggleButton toggleButtonSound = (ToggleButton) findViewById(R.id.toggleButton);
-        toggleButtonSound.setEnabled(false);
-
-
-
-        // Cargamos la cancion
-        mPlayer = MediaPlayer.create(this, R.raw.coldplay);
-
-
-        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
-               @Override
-               public void onPrepared (MediaPlayer mp){
-                 Log.d("AUDIO", "Cargada la cancion");
-                  toggleButtonSound.setEnabled(true);
-                 }
-               }
-        );
-
-        // Suena la cancion
-        toggleButtonSound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(sonando==0){
-                    toggleButtonSound.setText("On");
-                    sonando=1;
-
-                    mPlayer.start();
-
-                }else if(sonando==1){
-                    toggleButtonSound.setText("Off");
-                    sonando=2;
-
-                    mPlayer.pause();
+        toggleButtonSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isCheked) {
+                SharedPreferences.Editor prefEd = pref.edit();
+                if(isCheked){
+                    prefEd.putBoolean("audio", true);
+                    prefEd.commit();
                 }else{
-                    toggleButtonSound.setText("On");
-                    sonando=1;
-
-                    mPlayer.start();
+                    prefEd.putBoolean("audio", false);
+                    prefEd.commit();
                 }
             }
         });
 
-        // Request audio focus
-        int result = mAudioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        mCanPlayAudio = AudioManager.AUDIOFOCUS_REQUEST_GRANTED == result;
     }
-
-    // Get ready to play sound effects
-    @Override
-    protected void onResume() {
-        Log.d("AUDIO", "VOLVIENDO A TOCAR");
-        super.onResume();
-        mAudioManager.setSpeakerphoneOn(true);
-        mAudioManager.loadSoundEffects();
-    }
-
-    // Release resources & clean up
-    @Override
-    protected void onPause() {
-        Log.d("AUDIO", "EN PAUSA");
-        if (null != mAudioManager) {
-            mPlayer.release();
-
-        }
-        mAudioManager.setSpeakerphoneOn(false);
-        mAudioManager.unloadSoundEffects();
-        super.onPause();
-    }
-
-    // Listen for Audio focus changes
-    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-        public void onAudioFocusChange(int focusChange) {
-            if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
-                mAudioManager.abandonAudioFocus(afChangeListener);
-                mCanPlayAudio = false;
-            }
-        }
-    };
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

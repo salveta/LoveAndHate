@@ -3,17 +3,24 @@ package com.example.lovehate.loveandhate;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class Settings extends Activity {
 
-    private SharedPreferences preferencias;
+    private SharedPreferences pref;
     private boolean audioAct;
+    private AudioManager mAudioManager;
+    private MediaPlayer mPlayer;
+    private boolean mCanPlayAudio;
     public static final String PREFS_NAME = "AmorOdioSettings";
 
     @Override
@@ -22,8 +29,23 @@ public class Settings extends Activity {
         setContentView(R.layout.activity_settings);
 
         //Capturamos las preferencias del usuario
-        preferencias = getSharedPreferences(PREFS_NAME,0);
-        audioAct=preferencias.getBoolean("Audio",true);
+        pref = getSharedPreferences(PREFS_NAME,0);
+        audioAct=pref.getBoolean("Audio",true);
+        Log.d("AUDIO SET", String.valueOf(audioAct));
+
+
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        mPlayer = MediaPlayer.create(this, R.raw.coldplay);
+
+        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+                 @Override
+                 public void onPrepared (MediaPlayer mp){
+                    Log.d("AUDIO", "Cargada la cancion");
+                    if (audioAct) mPlayer.start();
+                    }
+                 }
+        );
 
         //Create variable button
         final Button buttonLoveHate = (Button) findViewById(R.id.loveHate);
@@ -51,6 +73,11 @@ public class Settings extends Activity {
         }
         );
 
+        // Request audio focus
+        int result = mAudioManager.requestAudioFocus(afChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        mCanPlayAudio = AudioManager.AUDIOFOCUS_REQUEST_GRANTED == result;
+
+
         buttonSound.setOnClickListener(new Button.OnClickListener(){
              @Override
              public void onClick(View v) {
@@ -61,6 +88,36 @@ public class Settings extends Activity {
              }
         }
         );
+
+    }
+
+    // Listen for Audio focus changes
+    AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                mAudioManager.abandonAudioFocus(afChangeListener);
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        Log.d("AUDIO", "EN PAUSA");
+        mAudioManager.setSpeakerphoneOn(false);
+        mAudioManager.unloadSoundEffects();
+        audioAct = pref.getBoolean("audio", true);
+        if(audioAct) mPlayer.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("AUDIO", "VOLVIENDO A TOCAR");
+        super.onResume();
+        audioAct=pref.getBoolean("audio", true);
+        mAudioManager.setSpeakerphoneOn(true);
+        mAudioManager.loadSoundEffects();
+        if(audioAct) mPlayer.start();
     }
 
 
