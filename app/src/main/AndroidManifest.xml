@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lovehate.loveandhate" >
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,18 @@
         <activity
             android:name=".RunSound"
             android:label="@string/title_activity_run_sound" >
+        </activity>
+        <activity
+            android:name=".Formulario"
+            android:label="@string/title_activity_formulario" >
+        </activity>
+        <activity
+            android:name=".Love"
+            android:label="@string/title_activity_love" >
+        </activity>
+        <activity
+            android:name=".Hate"
+            android:label="@string/title_activity_hate" >
         </activity>
     </application>
 

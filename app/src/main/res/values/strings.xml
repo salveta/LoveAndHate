@@ -31,5 +31,14 @@
     <string name="title_activity_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_run_sound">RunSound</string>
+    <string name="title_activity_formulario">Formulario</string>
+    <string name="cancelar">cancelar</string>
+    <string name="guardar">guardar</string>
+    <string name="label_id">id</string>
+    <string name="hipoteca_crear_titulo">Añadir</string>
+    <string name="label_nombre_artista">Odio o Amor</string>
+    <string name="crear">Nuevo Item</string>
+    <string name="title_activity_love">Love</string>
+    <string name="title_activity_hate">Hate</string>
 
 </resources>

@@ -3,6 +3,8 @@ package com.example.lovehate.loveandhate;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.SimpleCursorAdapter;
 
 
 public class Settings extends Activity {
@@ -22,6 +24,19 @@ public class Settings extends Activity {
     private MediaPlayer mPlayer;
     private boolean mCanPlayAudio;
     public static final String PREFS_NAME = "AmorOdioSettings";
+
+    //Variables BBDD
+    private DataBaseHelper mDbHelper;
+    private SQLiteDatabase db;
+    private SimpleCursorAdapter mAdapter;
+    private Cursor c;
+
+    private static final String TAG = "Datos";
+
+    public static final String C_MODO  = "modo" ;
+    public static final int C_VISUALIZAR = 551 ;
+    public static final int C_CREAR = 552 ;
+    public static final int C_EDITAR = 553 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +66,33 @@ public class Settings extends Activity {
         final Button buttonLoveHate = (Button) findViewById(R.id.loveHate);
         final Button buttonClose = (Button) findViewById(R.id.close);
         final Button buttonSound = (Button) findViewById(R.id.sound);
+        final Button love = (Button) findViewById(R.id.love);
+        final Button hate = (Button) findViewById(R.id.hate);
+
+        hate.setOnClickListener(new Button.OnClickListener(){
+             @Override
+             public void onClick(View v) {
+             //creamos la intención para lanzar la segunda vista
+             Intent launchHate = new Intent(
+                Settings.this, Hate.class
+             );
+             startActivity(launchHate);
+             }
+        }
+        );
+
+
+        love.setOnClickListener(new Button.OnClickListener(){
+              @Override
+              public void onClick(View v) {
+              //creamos la intención para lanzar la segunda vista
+              Intent launchLove = new Intent(
+                Settings.this, Love.class
+              );
+              startActivity(launchLove);
+              }
+        }
+        );
 
         buttonLoveHate.setOnClickListener(new Button.OnClickListener(){
              @Override
@@ -100,15 +142,6 @@ public class Settings extends Activity {
         }
     };
 
-    @Override
-    protected void onPause() {
-        Log.d("AUDIO", "EN PAUSA");
-        mAudioManager.setSpeakerphoneOn(false);
-        mAudioManager.unloadSoundEffects();
-        audioAct = pref.getBoolean("audio", true);
-        if(audioAct) mPlayer.pause();
-        super.onPause();
-    }
 
     @Override
     protected void onResume() {
@@ -118,6 +151,16 @@ public class Settings extends Activity {
         mAudioManager.setSpeakerphoneOn(true);
         mAudioManager.loadSoundEffects();
         if(audioAct) mPlayer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("AUDIO", "EN PAUSA");
+        mAudioManager.setSpeakerphoneOn(false);
+        mAudioManager.unloadSoundEffects();
+        audioAct = pref.getBoolean("audio", true);
+        if(audioAct) mPlayer.pause();
+        super.onPause();
     }
 
 

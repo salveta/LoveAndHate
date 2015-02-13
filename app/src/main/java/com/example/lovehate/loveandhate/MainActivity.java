@@ -15,6 +15,8 @@ public class MainActivity extends Activity {
     static final Down fragmentDown = new Down();
     static final Up fragmentUp = new Up();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

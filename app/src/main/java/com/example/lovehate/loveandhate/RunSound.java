@@ -2,15 +2,10 @@ package com.example.lovehate.loveandhate;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
@@ -18,8 +13,6 @@ import android.widget.ToggleButton;
 public class RunSound extends Activity {
     private SharedPreferences pref;
     private boolean audioAct;
-    private AudioManager mAudioManager;
-    private MediaPlayer mPlayer;
     public static final String PRESS_NAME = "AmorOdioSettings";
 
 

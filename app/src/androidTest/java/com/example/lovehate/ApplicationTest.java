@@ -1,4 +1,4 @@
-package com.example.lovehate.loveandhate;
+package com.example.lovehate;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
